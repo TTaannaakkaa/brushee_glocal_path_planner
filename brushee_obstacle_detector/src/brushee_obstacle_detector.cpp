@@ -42,8 +42,8 @@ void BrusheeObstacleDetector::scan_obstacle()
         const double angle = laser_scan_.angle_min + laser_scan_.angle_increment * i;
         const double range = laser_scan_.ranges[i];
         geometry_msgs::Pose obs_pose;
-        obs_pose.position.x = range * cos(angle + M_PI/4);
-        obs_pose.position.y = range * sin(angle + M_PI/4);
+        obs_pose.position.x = range * cos(angle);
+        obs_pose.position.y = range * sin(angle);
         obstacle_pose_array_.poses.push_back(obs_pose);
 
     }
