@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# generated from catkin/python/catkin/environment_cache.py
+
+# based on a snapshot of the environment before and after calling the setup script
+# it emulates the modifications of the setup script without recurring computations
+
+# new environment variables
+
+# modified environment variables
+export CMAKE_PREFIX_PATH="/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_glocal_path_planner/build/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_glocal_path_planner/build'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_glocal_path_planner/build/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH='/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_glocal_path_planner:/home/amsl/brushee_ws/src/amsl_gazebo_worlds:/home/amsl/brushee_ws/src/brushee_description:/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_glocal_path_planner:/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_local_map_creator:/home/amsl/brushee_ws/src/brushee_navigation/brushee_navigation_msgs:/home/amsl/brushee_ws/src/brushee_navigation/brushee_navigator:/home/amsl/brushee_ws/src/brushee_glocal_path_planner/brushee_obstacle_detector:/home/amsl/brushee_ws/src/brushee_navigation/brushee_path_editor:/home/amsl/brushee_ws/src/ccv_dynamixel_msgs:/home/amsl/brushee_ws/src/DynamixelSDK/ros/dynamixel_sdk:/home/amsl/brushee_ws/src/DynamixelSDK/ros/dynamixel_sdk_examples:/home/amsl/brushee_ws/src/dynamixel-workbench/dynamixel_workbench:/home/amsl/brushee_ws/src/dynamixel-workbench/dynamixel_workbench_operators:/home/amsl/brushee_ws/src/dynamixel-workbench/dynamixel_workbench_toolbox:/home/amsl/brushee_ws/src/dynamixel-workbench/dynamixel_workbench_controllers:/home/amsl/brushee_ws/src/ccv_dynamixel_controller:/home/amsl/brushee_ws/src/hello_ros/hello_cpp:/home/amsl/brushee_ws/src/hello_ros/hello_msgs:/home/amsl/brushee_ws/src/hello_ros/hello_python:/home/amsl/brushee_ws/src/hello_ros/listen_image:/home/amsl/brushee_ws/src/local_map_creator:/home/amsl/brushee_ws/src/my_ros_util:/home/amsl/brushee_ws/src/brushee_navigation/brushee_navigation_manager:/home/amsl/brushee_ws/src/obstacle_detector:/home/amsl/brushee_ws/src/hello_ros/string_to_twist:/home/amsl/brushee_ws/src/hello_ros/hello_rapps:/home/amsl/brushee_ws/src/ydlidar_ros_driver:/opt/ros/noetic/share'

@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: brushee_glocal_path_planner
+Description: Description of brushee_glocal_path_planner
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lbrushee_glocal_path_planner
+Requires: 
