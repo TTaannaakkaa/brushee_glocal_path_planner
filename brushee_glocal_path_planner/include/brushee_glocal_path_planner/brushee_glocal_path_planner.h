@@ -46,7 +46,8 @@ class BrusheeGlocalPathPlanner {
     std::tuple<int, int> search_node(const Node node);
     geometry_msgs::PoseStamped calc_pose(const Node node);
 
-    void parh_planning();
+    void path_planning();
+    Node get_goal_node();
     Node select_current_node();
 
     int HZ_;
@@ -58,13 +59,15 @@ class BrusheeGlocalPathPlanner {
     ros::NodeHandle nh_;
     ros::NodeHandle private_nh_;
 
-    ros::Subscriber map_sub_;
-    ros::Subscriber goal_sub_;
+    ros::Subscriber sub_map_;
+    ros::Subscriber sub_goal_;
 
-    ros::Publisher path_pub_;
+    ros::Publisher pub_path_;
+    ros::Publisher pub_goal_;
 
     nav_msgs::OccupancyGrid map_;
     nav_msgs::Path path_;
+    geometry_msgs::PoseStamped goal_;
 };
 
 #endif // BRUSHEE_GLOCAL_PATH_PLANNER_H
