@@ -3,7 +3,6 @@
 int main(int argc, char **argv) {
   ros::init(argc, argv, "brushee_glocal_path_planner");
   BrusheeGlocalPathPlanner brushee_glocal_path_planner;
-  glocal_path_planner.process();
-
+  brushee_glocal_path_planner.process();
   return 0;
 }

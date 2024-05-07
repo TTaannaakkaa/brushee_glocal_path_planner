@@ -61,8 +61,7 @@ void BrusheeLocalMapCreator::process() {
 
 void BrusheeLocalMapCreator::init_local_map() {
   local_map_raw_.data.clear();
-  local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height,
-                             -1);
+  local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height, -1);
 }
 
 void BrusheeLocalMapCreator::update_local_map() {

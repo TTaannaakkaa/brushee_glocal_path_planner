@@ -39,7 +39,7 @@ class BrusheeGlocalPathPlanner {
     bool is_goal(const Node node);
     bool is_same_node(const Node node1, const Node node2);
     bool is_parent(const int cloed_node_index, const Node node);
-    int search_node_from_node(const Node node, const std::vector<Node>& set);
+    int search_node_from_set(const Node node, const std::vector<Node>& set);
     double calc_heuristic(const Node node);
     Node get_neighbor_node(const Node node, const Motion motion);
     Motion get_motion(const int dx, const int dy, const double cost);
