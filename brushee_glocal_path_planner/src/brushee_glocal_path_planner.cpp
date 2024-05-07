@@ -1,27 +1,52 @@
 #include "brushee_glocal_path_planner/brushee_glocal_path_planner.h"
 
 BrusheeGlocalPathPlanner::BrusheeGlocalPathPlanner():private_nh_("~") {
-  private_nh_.getParam("HZ", HZ_);
+  private_nh_.param("HZ", HZ_,{10});
 
   sub_map_ = nh_.subscribe("/local_map", 1, &BrusheeGlocalPathPlanner::mapCallback, this);
   sub_goal_ = nh_.subscribe("/local_goal", 1, &BrusheeGlocalPathPlanner::goalCallback, this);
+
+  path_.header.frame_id = "base_link";
+  path_.poses.reserve(1000);
   
   pub_path_ = nh_.advertise<nav_msgs::Path>("/glocal_path", 1);
   pub_goal_ = nh_.advertise<geometry_msgs::PoseStamped>("/glocal_goal", 1);
+
+  printf("%d\n", HZ_);
+
 }
 
 void BrusheeGlocalPathPlanner::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg) {
+  is_map_ = true;
   map_ = *msg;
 }
 
-void BrusheeGlocalPathPlanner::goalCallback(const geometry_msgs::PoseStamped::ConstPtr& msg) {
-  goal_ = *msg;
+void BrusheeGlocalPathPlanner::goalCallback(const geometry_msgs::PointStamped::ConstPtr& msg) {
+  map_goal_ = *msg;
+  tf::StampedTransform transform;
+
+  try {
+    tflistener_.lookupTransform("base_link", map_goal_.header.frame_id, ros::Time(0), transform);
+  }
+  catch (tf::TransformException& ex) {
+    ROS_ERROR("%s", ex.what());
+    return;
+  }
+  tf::Vector3 point(map_goal_.point.x, map_goal_.point.y, map_goal_.point.z);
+  tf::Vector3 transformed_point = transform * point;
+
+  base_link_goal_.header.frame_id = "base_link";
+  base_link_goal_.header.stamp = ros::Time::now();
+  base_link_goal_.point.x = transformed_point.getX();
+  base_link_goal_.point.y = transformed_point.getY();
+  base_link_goal_.point.z = transformed_point.getZ();
 }
 
 void BrusheeGlocalPathPlanner::process() {
   ros::Rate loop_rate(HZ_);
   while(ros::ok()) {
-    path_planning();
+    if(is_map_) path_planning();
+    // else ROS_WARN_STREAM("map is not received.");
     ros::spinOnce();
     loop_rate.sleep();
   }
@@ -31,7 +56,7 @@ void BrusheeGlocalPathPlanner::path_planning() {
   OPEN_SET_.clear();
   CLOSED_SET_.clear();
 
-  START_NODE_ = {0, 0, 0, 0, 0};
+  START_NODE_ = {100, 100, 0, 0, 0};
   GOAL_NODE_ = get_goal_node();
 
   START_NODE_.cost = calc_heuristic(START_NODE_);
@@ -54,13 +79,14 @@ void BrusheeGlocalPathPlanner::path_planning() {
     }
   }
   pub_path_.publish(path_);
+  path_.poses.clear();
   // exit(0);
 }
 
 Node BrusheeGlocalPathPlanner::get_goal_node() {
   Node goal_node;
-  goal_node.index_x = int(round((goal_.pose.position.x - map_.info.origin.position.x) / map_.info.resolution));
-  goal_node.index_y = int(round((goal_.pose.position.y - map_.info.origin.position.y) / map_.info.resolution));
+  goal_node.index_x = int(round((base_link_goal_.point.x - map_.info.origin.position.x) / map_.info.resolution));
+  goal_node.index_y = int(round((base_link_goal_.point.y - map_.info.origin.position.y) / map_.info.resolution));
 
   return goal_node;
 }

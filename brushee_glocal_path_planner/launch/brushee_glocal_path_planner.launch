@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="brushee_glocal_path_planner_settings" default="$(find brushee_glocal_path_planner)/config/param/brushee_glocal_path_planner.yaml" />
+
+  <include file="$(find brushee_local_map_creator)/launch/brushee_local_map_creator.launch" />
+
+  <node name="brushee_glocal_path_planner" pkg="brushee_glocal_path_planner" type="brushee_glocal_path_planner_node" output="screen">
+    <rosparam command="load" file="$(arg brushee_glocal_path_planner_settings)" />
+  </node>
+</launch>
