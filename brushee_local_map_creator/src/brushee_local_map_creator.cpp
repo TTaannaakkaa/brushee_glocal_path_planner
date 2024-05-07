@@ -61,7 +61,7 @@ void BrusheeLocalMapCreator::process() {
 
 void BrusheeLocalMapCreator::init_local_map() {
   local_map_raw_.data.clear();
-  local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height, -1);
+  local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height, 0);
 }
 
 void BrusheeLocalMapCreator::update_local_map() {
@@ -86,19 +86,19 @@ void BrusheeLocalMapCreator::update_local_map() {
 
   local_map_ = local_map_raw_;
 
-  for (int i = 0; i < local_map_raw_.data.size(); i++) {
-    if (local_map_raw_.data[i] == 100) {
-      int index_x = i % local_map_raw_.info.width;
-      int index_y = i / local_map_raw_.info.width;
-      for (int j = -3; j < 3; j++) {
-        for (int k = -3; k < 3; k++) {
-          int index =
-              (index_x + k) + ((index_y + j) * local_map_raw_.info.width);
-          local_map_.data[index] = 100;
-        }
-      }
-    }
-  }
+  // for (int i = 0; i < local_map_raw_.data.size(); i++) {
+  //   if (local_map_raw_.data[i] == 100) {
+  //     int index_x = i % local_map_raw_.info.width;
+  //     int index_y = i / local_map_raw_.info.width;
+  //     for (int j = -3; j < 3; j++) {
+  //       for (int k = -3; k < 3; k++) {
+  //         int index =
+  //             (index_x + k) + ((index_y + j) * local_map_raw_.info.width);
+  //         local_map_.data[index] = 100;
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 bool BrusheeLocalMapCreator::is_in_local_map(const double dist,
