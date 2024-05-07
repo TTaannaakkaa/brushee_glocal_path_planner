@@ -4,7 +4,9 @@
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h> 
-#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PointStamped.h>
+#include <tf/transform_listener.h>
+#include <tf/transform_datatypes.h>
 
 struct Node {
   int index_x;
@@ -26,7 +28,7 @@ class BrusheeGlocalPathPlanner {
     void process();
   private:
     void mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
-    void goalCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
+    void goalCallback(const geometry_msgs::PointStamped::ConstPtr& msg);
 
     void update_set(const Node node);
     void create_path(Node node);
@@ -51,6 +53,7 @@ class BrusheeGlocalPathPlanner {
     Node select_current_node();
 
     int HZ_;
+    bool is_map_ = false;
     Node START_NODE_;
     Node GOAL_NODE_;
     std::vector<Node> OPEN_SET_;
@@ -67,7 +70,10 @@ class BrusheeGlocalPathPlanner {
 
     nav_msgs::OccupancyGrid map_;
     nav_msgs::Path path_;
-    geometry_msgs::PoseStamped goal_;
+    geometry_msgs::PointStamped map_goal_;
+    geometry_msgs::PointStamped base_link_goal_;
+
+    tf::TransformListener tflistener_;
 };
 
 #endif // BRUSHEE_GLOCAL_PATH_PLANNER_H
