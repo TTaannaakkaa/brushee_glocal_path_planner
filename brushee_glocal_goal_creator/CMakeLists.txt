@@ -10,7 +10,7 @@ project(brushee_glocal_goal_creator)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   nav_msgs
-  ros_cpp
+  roscpp
   std_msgs
 )
 
@@ -48,7 +48,7 @@ target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 #############
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
-  find_package(rislint REQUIRED)
+  find_package(roslint REQUIRED)
   roslint_cpp()
   roslint_add_test()
 endif()

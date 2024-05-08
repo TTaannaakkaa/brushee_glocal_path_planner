@@ -66,7 +66,7 @@ class BrusheeGlocalPathPlanner {
     ros::Subscriber sub_goal_;
 
     ros::Publisher pub_path_;
-    ros::Publisher pub_goal_;
+    // ros::Publisher pub_goal_;
 
     nav_msgs::OccupancyGrid map_;
     nav_msgs::Path path_;
