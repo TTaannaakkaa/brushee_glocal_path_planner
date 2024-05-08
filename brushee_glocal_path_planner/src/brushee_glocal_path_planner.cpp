@@ -10,7 +10,7 @@ BrusheeGlocalPathPlanner::BrusheeGlocalPathPlanner():private_nh_("~") {
   path_.poses.reserve(1000);
   
   pub_path_ = nh_.advertise<nav_msgs::Path>("/glocal_path", 1);
-  pub_goal_ = nh_.advertise<geometry_msgs::PoseStamped>("/glocal_goal", 1);
+  // pub_goal_ = nh_.advertise<geometry_msgs::PoseStamped>("/glocal_goal", 1);
 
   printf("%d\n", HZ_);
 
