@@ -38,6 +38,11 @@ private:
     void obs_poses_callback(const geometry_msgs::PoseArrayConstPtr& msg);
 
     /**
+     * @brief A callback to handle costmap message
+     */
+    void costmap_callback(const nav_msgs::OccupancyGridConstPtr& msg);
+
+    /**
      * @brief Check if the point is in the local map
      * @param x The point x coordinate
      * @param y The point y coordinate
@@ -73,21 +78,27 @@ private:
     void update_local_map();
 
     int hz_;
+    int expand_size_;
     double local_map_size_;
     double local_map_resolution_;
-
+ 
+    bool is_expand_;
+    bool is_costmap_;
     bool is_get_obs_poses_ = false;
+    bool is_get_costmap_ = false;
     
 
     ros::NodeHandle nh_;
     ros::NodeHandle private_nh_;
 
     ros::Subscriber sub_obs_poses_;
+    ros::Subscriber sub_costmap_;
 
     ros::Publisher pub_local_map_;
 
     nav_msgs::OccupancyGrid local_map_raw_;
     nav_msgs::OccupancyGrid local_map_;
+    nav_msgs::OccupancyGrid costmap_;
     geometry_msgs::PoseArray obs_poses_;
 
 };

@@ -13,9 +13,15 @@ BrusheeLocalMapCreator::BrusheeLocalMapCreator() : private_nh_("~") {
   private_nh_.getParam("hz", hz_);
   private_nh_.getParam("map_size", local_map_size_);
   private_nh_.getParam("map_reso", local_map_resolution_);
+  private_nh_.getParam("expand_size", expand_size_);
+  private_nh_.getParam("is_expand", is_expand_);
+  private_nh_.getParam("is_costmap", is_costmap_);
 
   sub_obs_poses_ = nh_.subscribe(
       "/obstacle_pose", 1, &BrusheeLocalMapCreator::obs_poses_callback, this);
+  sub_costmap_ = nh_.subscribe(
+      "/costmap_creator/costmap", 1,
+      &BrusheeLocalMapCreator::costmap_callback, this);
   pub_local_map_ = nh_.advertise<nav_msgs::OccupancyGrid>("/local_map", 1);
 
   local_map_raw_.header.frame_id = "base_link";
@@ -45,6 +51,12 @@ void BrusheeLocalMapCreator::obs_poses_callback(
   is_get_obs_poses_ = true;
 }
 
+void BrusheeLocalMapCreator::costmap_callback(
+    const nav_msgs::OccupancyGridConstPtr &msg) {
+  costmap_ = *msg;
+  is_get_obs_poses_ = true;
+}
+
 void BrusheeLocalMapCreator::process() {
   ros::Rate loop_rate(hz_);
 
@@ -61,7 +73,11 @@ void BrusheeLocalMapCreator::process() {
 
 void BrusheeLocalMapCreator::init_local_map() {
   local_map_raw_.data.clear();
-  local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height, 0);
+  if(is_costmap_) {
+    local_map_raw_ = costmap_;
+  } else {
+    local_map_raw_.data.assign(local_map_.info.width * local_map_.info.height, 0);
+  }
 }
 
 void BrusheeLocalMapCreator::update_local_map() {
@@ -72,12 +88,15 @@ void BrusheeLocalMapCreator::update_local_map() {
     const double dist = hypot(x, y);
     const double angle = atan2(y, x);
 
-    for (double dist_from_robot = 0.0;
-         (dist_from_robot < dist && is_in_local_map(dist_from_robot, angle));
-         dist_from_robot += local_map_resolution_) {
-      const int grid_index = get_grid_index(dist_from_robot, angle);
-      local_map_raw_.data[grid_index] = 0;
+    if(!is_costmap_ && is_get_costmap_) {
+      for (double dist_from_robot = 0.0;
+          (dist_from_robot < dist && is_in_local_map(dist_from_robot, angle));
+          dist_from_robot += local_map_resolution_) {
+        const int grid_index = get_grid_index(dist_from_robot, angle);
+        local_map_raw_.data[grid_index] = 0;
+      }
     }
+
     if (is_in_local_map(dist, angle)) {
       const int grid_index = xy_to_index(x, y);
       local_map_raw_.data[grid_index] = 100;
@@ -86,19 +105,21 @@ void BrusheeLocalMapCreator::update_local_map() {
 
   local_map_ = local_map_raw_;
 
-  // for (int i = 0; i < local_map_raw_.data.size(); i++) {
-  //   if (local_map_raw_.data[i] == 100) {
-  //     int index_x = i % local_map_raw_.info.width;
-  //     int index_y = i / local_map_raw_.info.width;
-  //     for (int j = -3; j < 3; j++) {
-  //       for (int k = -3; k < 3; k++) {
-  //         int index =
-  //             (index_x + k) + ((index_y + j) * local_map_raw_.info.width);
-  //         local_map_.data[index] = 100;
-  //       }
-  //     }
-  //   }
-  // }
+  if(is_expand_) {
+    for (int i = 0; i < local_map_raw_.data.size(); i++) {
+      if (local_map_raw_.data[i] == 100) {
+        int index_x = i % local_map_raw_.info.width;
+        int index_y = i / local_map_raw_.info.width;
+        for (int j = -expand_size_; j < expand_size_; j++) {
+          for (int k = -expand_size_; k < expand_size_; k++) {
+            int index =
+                (index_x + k) + ((index_y + j) * local_map_raw_.info.width);
+            local_map_.data[index] = 100;
+          }
+        }
+      }
+    }
+  }
 }
 
 bool BrusheeLocalMapCreator::is_in_local_map(const double dist,
