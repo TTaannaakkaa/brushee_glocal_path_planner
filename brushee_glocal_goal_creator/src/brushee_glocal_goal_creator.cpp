@@ -10,7 +10,7 @@ BrusheeGlocalGoalCreator::BrusheeGlocalGoalCreator() : private_nh_("~") {
   goal_.header.frame_id = "base_link";
 
   sub_path_ = nh_.subscribe("/glocal_path", 1, &BrusheeGlocalGoalCreator::pathCallback, this);
-  pub_goal_ = nh_.advertise<geometry_msgs::PointStamped>("/glocal_goal", 1);
+  pub_goal_ = nh_.advertise<geometry_msgs::PoseStamped>("/glocal_goal", 1);
 }
 
 void BrusheeGlocalGoalCreator::pathCallback(const nav_msgs::Path::ConstPtr& msg) {
@@ -35,7 +35,8 @@ void BrusheeGlocalGoalCreator::publishGoal() {
       if(goal_index_ >= path_.poses.size()) goal_index_ = path_.poses.size() - 1;
   }
   goal_.header.stamp = ros::Time::now();
-  goal_.point = path_.poses[goal_index_].pose.position;
+  // goal_.point = path_.poses[goal_index_].pose.position;
+  goal_.pose = path_.poses[goal_index_].pose;
   pub_goal_.publish(goal_);
 }
 

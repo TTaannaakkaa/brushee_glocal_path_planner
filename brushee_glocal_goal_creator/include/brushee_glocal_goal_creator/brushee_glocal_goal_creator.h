@@ -2,7 +2,7 @@
 #define BRUSHEE_GLOCAL_GOAL_CREATOR_H
 
 #include <ros/ros.h>
-#include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Path.h>
 
 class BrusheeGlocalGoalCreator {
@@ -27,7 +27,7 @@ class BrusheeGlocalGoalCreator {
     ros::Publisher pub_goal_;
 
     nav_msgs::Path path_;
-    geometry_msgs::PointStamped goal_;
+    geometry_msgs::PoseStamped goal_;
 };
 
 #endif // BRUSHEE_GLOCAL_GOAL_CREATOR_H
