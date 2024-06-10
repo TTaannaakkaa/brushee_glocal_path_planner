@@ -1,1 +1,4 @@
 HZ: 10;
+is_pose: ture;
+is_visualize: false;
+goal_tolerance: 10.0;

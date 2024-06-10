@@ -3,6 +3,7 @@
 BrusheeObstacleDetector::BrusheeObstacleDetector() : private_nh_("~") {
   private_nh_.getParam("hz", hz_);
   private_nh_.getParam("laser_step", laser_step_);
+  private_nh_.getParam("ignore_range_min", ignore_range_min_);
 
   laser_scan_sub_ = nh_.subscribe(
       "/scan", 1, &BrusheeObstacleDetector::laser_scan_callback, this);
@@ -36,6 +37,7 @@ void BrusheeObstacleDetector::scan_obstacle() {
     const double angle =
         laser_scan_.angle_min + laser_scan_.angle_increment * i;
     const double range = laser_scan_.ranges[i];
+    if (range < ignore_range_min_) continue;
     geometry_msgs::Pose obs_pose;
     obs_pose.position.x = range * cos(angle);
     obs_pose.position.y = range * sin(angle);
