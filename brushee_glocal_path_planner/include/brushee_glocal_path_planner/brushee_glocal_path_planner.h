@@ -5,6 +5,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h> 
 #include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_datatypes.h>
 
@@ -28,7 +29,9 @@ class BrusheeGlocalPathPlanner {
     void process();
   private:
     void mapCallback(const nav_msgs::OccupancyGrid::ConstPtr& msg);
-    void goalCallback(const geometry_msgs::PointStamped::ConstPtr& msg);
+    void pointgoalCallback(const geometry_msgs::PointStamped::ConstPtr& msg);
+    void posegoalCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
+
 
     void update_set(const Node node);
     void create_path(Node node);
@@ -49,11 +52,16 @@ class BrusheeGlocalPathPlanner {
     geometry_msgs::PoseStamped calc_pose(const Node node);
 
     void path_planning();
+    void show_node_point(const Node node);
     Node get_goal_node();
     Node select_current_node();
 
     int HZ_;
+    double GOAL_TOLEARANCE_;
     bool is_map_ = false;
+    bool is_pose_ = true;
+    bool is_visualize_ = false;
+    bool is_goal_in_obs_ = false;
     Node START_NODE_;
     Node GOAL_NODE_;
     std::vector<Node> OPEN_SET_;
@@ -66,12 +74,14 @@ class BrusheeGlocalPathPlanner {
     ros::Subscriber sub_goal_;
 
     ros::Publisher pub_path_;
-    // ros::Publisher pub_goal_;
+    ros::Publisher pub_node_point_;
 
     nav_msgs::OccupancyGrid map_;
     nav_msgs::Path path_;
-    geometry_msgs::PointStamped map_goal_;
+    geometry_msgs::PointStamped point_goal_;
+    geometry_msgs::PoseStamped pose_goal_;
     geometry_msgs::PointStamped base_link_goal_;
+    geometry_msgs::PointStamped node_point_;
 
     tf::TransformListener tflistener_;
 };

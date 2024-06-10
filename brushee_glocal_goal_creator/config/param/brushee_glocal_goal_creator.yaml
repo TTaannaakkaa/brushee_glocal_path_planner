@@ -1,3 +1,5 @@
 hz : 10
 index_step : 1
-goal_dintance : 1.0
+goal_dintance_weight : 0.7
+pre_weight : 20
+tmp_weight : 1

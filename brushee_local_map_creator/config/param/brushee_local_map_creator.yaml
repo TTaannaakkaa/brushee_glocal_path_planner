@@ -1,6 +1,6 @@
 hz: 10          # ループ周期 [Hz]
-map_size: 5.0   # マップの一辺の長さ [m]
-map_reso: 0.025 # マップの解像度 [m/cell]
-expand_size: 3  # マップの拡張サイズ [cell]
-is_expand: true # マップの拡張フラグ
-is_costmap: true # コストマップ有効化フラグ
+map_size: 10.0   # マップの一辺の長さ [m]
+map_reso: 0.1 # マップの解像度 [m/cell]
+expand_size: 1 # マップの拡張サイズ [cell]
+is_expand: false # マップの拡張フラグ
+is_costmap: false # コストマップ有効化フラグ

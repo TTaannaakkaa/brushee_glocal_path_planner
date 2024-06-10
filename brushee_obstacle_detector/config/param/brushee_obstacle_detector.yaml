@@ -1,3 +1,4 @@
 hz: 10                   # ループ周期 [Hz]
 laser_step: 1            # 何本ずつレーザを見るか(全1080本)
+ignore_range_min: 0.1    # レーザの最小値 [m]
 # robot_frame: "base_link" # frame_id

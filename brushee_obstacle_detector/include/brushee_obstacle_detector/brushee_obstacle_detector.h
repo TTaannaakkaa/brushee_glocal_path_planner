@@ -6,8 +6,8 @@
  * @date 2023-08-30
  */
 
-#ifndef BRUSHEE_OBSTACLE_DETECTOR_H
-#define BRUSHEE_OBSTACLE_DETECTOR_H
+#ifndef BRUSHEE_OBSTACLE_DETECTOR_BRUSHEE_OBSTACLE_DETECTOR_H
+#define BRUSHEE_OBSTACLE_DETECTOR_BRUSHEE_OBSTACLE_DETECTOR_H
 
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseArray.h>
@@ -60,6 +60,8 @@ private:
    */
   bool flag_laser_scan_ = false;
 
+  double ignore_range_min_;
+
   ros::NodeHandle nh_;
   ros::NodeHandle private_nh_;
 
@@ -71,4 +73,4 @@ private:
   sensor_msgs::LaserScan laser_scan_;
 };
 
-#endif // OBSTACLE_DETECTOR_H
+#endif  // OBSTACLE_DETECTOR_H
